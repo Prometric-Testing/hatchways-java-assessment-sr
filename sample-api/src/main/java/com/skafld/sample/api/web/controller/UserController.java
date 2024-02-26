@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -24,7 +25,7 @@ public class UserController {
     @ResponseBody
     public UserListResponse listUsers(
         @Valid final Optional<UserSearchRequest> request) {
-        return UserListResponse.builder().build();
+        return UserListResponse.builder().userList(List.of()).build();
     }
 
     @RequestMapping(
@@ -33,6 +34,6 @@ public class UserController {
     @ResponseBody
     public User createUser(
         @Valid @RequestBody final UserCreateRequest request) {
-        return User.builder().build();
+        return request.toUser();
     }
 }
