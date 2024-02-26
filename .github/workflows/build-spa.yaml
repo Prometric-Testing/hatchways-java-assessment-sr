@@ -21,7 +21,6 @@ jobs:
       node_version: '14'
       frontend_modules: '["sample-ui"]'
     secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       CI_PAT: ${{ secrets.CI_PAT }}
       ID_RSA: ${{ secrets.ID_RSA }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
