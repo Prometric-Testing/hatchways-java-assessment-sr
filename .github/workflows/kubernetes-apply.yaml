@@ -1,0 +1,32 @@
+name: Kubernetes apply
+on:
+  repository_dispatch:
+    types: [kubernetes-apply]
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Target environment'
+        default: qa-environment
+        required: true
+        type: choice
+        options:
+          - qa-environment
+          - dev-environment
+          - prod-environment
+      ref:
+        description: Git Ref (Default to workflow branch)
+        required: false
+
+jobs:
+  kubernetes:
+    name: "Kubernetes"
+    uses: skafld/github-actions/.github/workflows/kubernetes-apply.yaml@v2
+    with:
+      ref: ${{ github.event.inputs.ref }}
+      env: ${{ github.event.inputs.env }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ENVIRONMENT_NAMES: ${{ secrets.ENVIRONMENT_NAMES }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ASSUMABLE_ROLES_MAP: ${{ secrets.AWS_ASSUMABLE_ROLES_MAP }}

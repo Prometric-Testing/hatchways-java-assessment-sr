@@ -1,0 +1,19 @@
+name: "CodeQL Analysis"
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  codeql:
+    name: "CodeQL"
+    uses: skafld/github-actions/.github/workflows/codeql-analysis.yaml@v2
+    with:
+      languages: '["java"]'
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

@@ -1,0 +1,11 @@
+modules:
+  terraform:
+    tags: [infra, terraform]
+    pattern: infra/terraform/**
+  kubernetes:
+    tags: [infra, kubernetes]
+    pattern: infra/kubernetes/**
+  sample-api:
+    tags: [java, docker, api]
+  sample-worker:
+    tags: [java, docker, worker]

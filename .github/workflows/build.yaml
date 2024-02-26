@@ -1,0 +1,68 @@
+name: Build
+on:
+  push:
+    # On push to $default-branch
+    branches: ['main', 'releases/*']
+
+jobs:
+  diff:
+    name: "Diff"
+    uses: skafld/github-actions/.github/workflows/diff.yaml@v2
+    with:
+      config: diff-config.yaml
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docker:
+    needs: [diff]
+    name: "Docker"
+    if: ${{ needs.diff.outputs.docker_modules != '[]' }}
+    uses: skafld/github-actions/.github/workflows/docker-push.yaml@v3.2.0
+    with:
+      java_modules: ${{ needs.diff.outputs.java_modules }}
+      python_modules: ${{ needs.diff.outputs.python_modules }}
+      docker_modules: ${{ needs.diff.outputs.docker_modules }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  update-image-tag:
+    name: "Image update"
+    needs: [diff, docker]
+    uses: skafld/github-actions/.github/workflows/kubernetes-update-image.yaml@v2
+    with:
+      docker_modules: ${{ needs.diff.outputs.docker_modules }}
+      docker_image_tag: ${{ needs.docker.outputs.docker_image_tag }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ENVIRONMENT_NAMES: ${{ secrets.ENVIRONMENT_NAMES }}
+
+  kubernetes-apply:
+    needs: [diff]
+    name: "Kubernetes apply (qa-environment)"
+    if: ${{ fromJson(needs.diff.outputs.tags).kubernetes.changed }}
+    uses: skafld/github-actions/.github/workflows/workflow-trigger.yaml@v2
+    with:
+      workflow: kubernetes-apply
+      ref: ${{ github.ref }}
+      inputs: |
+        env: qa-environment
+        ref: ${{ github.sha }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  terraform-apply:
+    needs: [diff]
+    name: "Terraform apply (qa-environment)"
+    if: ${{ fromJson(needs.diff.outputs.tags).terraform.changed }}
+    uses: skafld/github-actions/.github/workflows/workflow-trigger.yaml@v2
+    with:
+      workflow: terraform-apply
+      ref: ${{ github.ref }}
+      inputs: |
+        env: qa-environment
+        ref: ${{ github.sha }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

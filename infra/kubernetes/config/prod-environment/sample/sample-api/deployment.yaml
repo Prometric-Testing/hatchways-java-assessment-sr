@@ -1,0 +1,10 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-api
+  namespace: sample
+  labels:
+    app: sample-api
+  annotations:
+    kubernetes.io/change-cause: REASON

@@ -1,0 +1,10 @@
+---
+spring:
+  config:
+    activate:
+      on-profile: overrides
+
+logging:
+  level:
+    com.skafld.sample: DEBUG
+    root: INFO

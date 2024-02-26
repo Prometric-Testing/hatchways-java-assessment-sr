@@ -1,0 +1,65 @@
+name: Check
+on:
+  pull_request:
+    # On any pull requests to $default-branch
+    branches: ['main', 'releases/*']
+
+jobs:
+  diff:
+    name: "Diff"
+    uses: skafld/github-actions/.github/workflows/diff.yaml@v2
+    with:
+      config: diff-config.yaml
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docker:
+    needs: [diff]
+    name: "Docker"
+    if: ${{ needs.diff.outputs.docker_modules != '[]' }}
+    uses: skafld/github-actions/.github/workflows/docker-check.yaml@v3.2.0
+    with:
+      java_modules: ${{ needs.diff.outputs.java_modules }}
+      python_modules: ${{ needs.diff.outputs.python_modules }}
+      docker_modules: ${{ needs.diff.outputs.docker_modules }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  maven:
+    needs: [diff]
+    name: "Maven"
+    if: ${{ needs.diff.outputs.java_modules != '[]' }}
+    uses: skafld/github-actions/.github/workflows/maven-check.yaml@v2
+    with:
+      maven_modules: ${{ needs.diff.outputs.java_modules }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  kubernetes:
+    needs: [diff]
+    name: "Kubernetes"
+    if: ${{ fromJson(needs.diff.outputs.tags).kubernetes.changed }}
+    uses: skafld/github-actions/.github/workflows/kubernetes-check.yaml@v2
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      ENVIRONMENT_NAMES: ${{ secrets.ENVIRONMENT_NAMES }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ASSUMABLE_ROLES_MAP: ${{ secrets.AWS_ASSUMABLE_ROLES_MAP }}
+
+  terraform:
+    needs: [diff]
+    name: "Terraform"
+    if: ${{ fromJson(needs.diff.outputs.tags).terraform.changed }}
+    uses: skafld/github-actions/.github/workflows/terraform-check.yaml@v2
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      ENVIRONMENT_NAMES: ${{ secrets.ENVIRONMENT_NAMES }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ASSUMABLE_ROLES_MAP: ${{ secrets.AWS_ASSUMABLE_ROLES_MAP }}
+

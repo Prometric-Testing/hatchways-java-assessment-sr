@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <if condition='isDefined("DD_ENV")'>
+            <then>
+                <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+            </then>
+            <else>
+                <encoder>
+                    <pattern>%d %green([%thread]) %highlight(%level) %logger{50} - %msg%n</pattern>
+                </encoder>
+            </else>
+        </if>
+    </appender>
+
+    <root level="ERROR">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <logger name="com.skafld.sample" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+</configuration>

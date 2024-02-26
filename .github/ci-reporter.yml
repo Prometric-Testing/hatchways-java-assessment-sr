@@ -1,0 +1,3 @@
+updateComment: true
+before: "✨ Good work on this PR so far! ✨ Unfortunately, the [ build]() is failing as of . Here's the output:"
+after: "I'm sure you can fix it! If you need help, don't hesitate to ask your peers!"

@@ -1,0 +1,91 @@
+---
+spring:
+  application:
+    name: "sample-api"
+  config:
+    activate:
+      on-profile: default
+  output:
+    ansi:
+      enabled: DETECT
+  main:
+    banner-mode: "off"
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    listener:
+      ack-mode: MANUAL_IMMEDIATE
+      concurrency: ${KAFKA_CONSUMER_CONCURRENCY:1}
+    consumer:
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      group-id: ${spring.application.name}
+      # Configures the Spring Kafka ErrorHandlingDeserializer that delegates to the 'real' deserializers
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        "spring.json.trusted.packages": "*"
+        # Delegate deserializers
+        "spring.deserializer.key.delegate.class": org.apache.kafka.common.serialization.StringDeserializer
+        "spring.deserializer.value.delegate.class": org.springframework.kafka.support.serializer.JsonDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+server:
+  servlet:
+    context-path: "/sample/sample-api"
+  error:
+    include-message: always
+  tomcat:
+    mbeanregistry:
+        enabled: true
+springdoc:
+  swagger-ui:
+    urls:
+    -
+      name: "sample-api"
+      url: "/sample/sample-api/v3/api-docs"
+
+management:
+  server:
+    port: 8001
+  endpoints:
+    web:
+      cors:
+        allowed-headers: '*'
+        allowed-origins: '*'
+        allowed-methods: 'OPTIONS, GET, POST'
+      exposure:
+        include: '*'
+  endpoint:
+    metrics:
+      enabled: true
+  security:
+    enabled: false
+
+skafld:
+  cors:
+    domains: ${CORS_DOMAINS_LIST:http://localhost:3000,http://localhost}
+    exposedHeaders: ${CORS_EXPOSED_HEADER_LIST:X-Authorization-Token,x-authorization-token,Authorization,authorization}
+  security:
+    configuration:
+      jwt:
+        secret: ${JWT_SECRET:fooBar}
+        private-key: ${JWT_PRIVATE_KEY:fooBar}
+        expiration-time: ${JWT_EXPIRATION:900}
+        audience: ${JWT_AUDIENCE:https://skafld.com}
+        issuer: ${JWT_ISSUER:https://skafld.com}
+        algorithm: ${JWT_ALGORITHM:HS256}
+        refresh-expiration: ${JWT_REFRESH_EXPIRATION:20}
+
+module.version: ${DOCKER_IMAGE_TAG:LATEST}
+module.terms-of-service: ${MODULE_TERMS_OF_SERVICE:https://skafld.com}
+module.name: ${MODULE_NAME:skafld.}
+module.url: ${MODULE_URL:https://skafld.com}
+module.email: ${MODULE_EMAIL:devs@skafld.com}
+
+
+logging.level.org.springframework.web: ${LOGGING_LEVEL:ERROR}
