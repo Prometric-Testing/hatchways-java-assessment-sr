@@ -16,4 +16,5 @@ jobs:
       languages: '["java"]'
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CI_PAT: ${{ secrets.CI_PAT }}
 

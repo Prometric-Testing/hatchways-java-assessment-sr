@@ -9,3 +9,4 @@ jobs:
     uses: skafld/github-actions/.github/workflows/prerelease.yaml@main
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CI_PAT: ${{ secrets.CI_PAT }}

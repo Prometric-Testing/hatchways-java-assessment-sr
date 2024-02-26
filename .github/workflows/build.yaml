@@ -12,6 +12,7 @@ jobs:
       config: diff-config.yaml
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CI_PAT: ${{ secrets.CI_PAT }}
 
   docker:
     needs: [diff]
@@ -24,6 +25,7 @@ jobs:
       docker_modules: ${{ needs.diff.outputs.docker_modules }}
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CI_PAT: ${{ secrets.CI_PAT }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
@@ -36,6 +38,7 @@ jobs:
       docker_image_tag: ${{ needs.docker.outputs.docker_image_tag }}
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CI_PAT: ${{ secrets.CI_PAT }}
       ENVIRONMENT_NAMES: ${{ secrets.ENVIRONMENT_NAMES }}
 
   kubernetes-apply:
@@ -51,6 +54,7 @@ jobs:
         ref: ${{ github.sha }}
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CI_PAT: ${{ secrets.CI_PAT }}
 
   terraform-apply:
     needs: [diff]
@@ -65,4 +69,5 @@ jobs:
         ref: ${{ github.sha }}
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CI_PAT: ${{ secrets.CI_PAT }}
 

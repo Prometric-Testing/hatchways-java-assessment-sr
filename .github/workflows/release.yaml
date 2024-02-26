@@ -12,4 +12,4 @@ jobs:
       env: prod-environment
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      CI_PAT: ${{ secrets.CI_PAT }}
