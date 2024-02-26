@@ -8,7 +8,6 @@
     <name>sample-api</name>
     <url>https://github.com/skafld/sample</url>
     <packaging>jar</packaging>
-
     <parent>
         <groupId>com.skafld.sample</groupId>
         <artifactId>sample</artifactId>
