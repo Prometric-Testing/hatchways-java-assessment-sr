@@ -46,6 +46,18 @@ public class UserControllerTest {
     }
 
     @Test
+    public void shouldCreateUser() throws Exception {
+        UserCreateRequest request = new UserCreateRequest("Foo");
+
+        mockMvc.perform(post("/api/v1/user")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().json("{\"name\":\"Foo\"}"));
+    }
+
+    @Test
     public void shouldReturnUserListWithCorrectSearch() throws Exception {
 
         mockMvc.perform(get("/api/v1/user")
