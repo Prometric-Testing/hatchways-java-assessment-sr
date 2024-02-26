@@ -10,8 +10,6 @@ jobs:
     uses: skafld/github-actions/.github/workflows/diff.yaml@main
     with:
       config: diff-config.yaml
-    secrets:
-      CI_PAT: ${{ secrets.CI_PAT }}
 
   docker:
     needs: [diff]
@@ -22,10 +20,6 @@ jobs:
       java_modules: ${{ needs.diff.outputs.java_modules }}
       python_modules: ${{ needs.diff.outputs.python_modules }}
       docker_modules: ${{ needs.diff.outputs.docker_modules }}
-    secrets:
-      CI_PAT: ${{ secrets.CI_PAT }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   maven:
     needs: [diff]
@@ -34,10 +28,6 @@ jobs:
     uses: skafld/github-actions/.github/workflows/maven-check.yaml@main
     with:
       maven_modules: ${{ needs.diff.outputs.java_modules }}
-    secrets:
-      CI_PAT: ${{ secrets.CI_PAT }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   kubernetes:
     needs: [diff]
