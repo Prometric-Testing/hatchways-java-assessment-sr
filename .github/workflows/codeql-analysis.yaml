@@ -11,7 +11,7 @@ on:
 jobs:
   codeql:
     name: "CodeQL"
-    uses: skafld/github-actions/.github/workflows/codeql-analysis.yaml@v2
+    uses: skafld/github-actions/.github/workflows/codeql-analysis.yaml@main
     with:
       languages: '["java"]'
     secrets:

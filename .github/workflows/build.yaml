@@ -7,7 +7,7 @@ on:
 jobs:
   diff:
     name: "Diff"
-    uses: skafld/github-actions/.github/workflows/diff.yaml@v2
+    uses: skafld/github-actions/.github/workflows/diff.yaml@main
     with:
       config: diff-config.yaml
     secrets:
@@ -17,7 +17,7 @@ jobs:
     needs: [diff]
     name: "Docker"
     if: ${{ needs.diff.outputs.docker_modules != '[]' }}
-    uses: skafld/github-actions/.github/workflows/docker-push.yaml@v3.2.0
+    uses: skafld/github-actions/.github/workflows/docker-push.yaml@main
     with:
       java_modules: ${{ needs.diff.outputs.java_modules }}
       python_modules: ${{ needs.diff.outputs.python_modules }}
@@ -30,7 +30,7 @@ jobs:
   update-image-tag:
     name: "Image update"
     needs: [diff, docker]
-    uses: skafld/github-actions/.github/workflows/kubernetes-update-image.yaml@v2
+    uses: skafld/github-actions/.github/workflows/kubernetes-update-image.yaml@main
     with:
       docker_modules: ${{ needs.diff.outputs.docker_modules }}
       docker_image_tag: ${{ needs.docker.outputs.docker_image_tag }}
@@ -42,7 +42,7 @@ jobs:
     needs: [diff]
     name: "Kubernetes apply (qa-environment)"
     if: ${{ fromJson(needs.diff.outputs.tags).kubernetes.changed }}
-    uses: skafld/github-actions/.github/workflows/workflow-trigger.yaml@v2
+    uses: skafld/github-actions/.github/workflows/workflow-trigger.yaml@main
     with:
       workflow: kubernetes-apply
       ref: ${{ github.ref }}
@@ -56,7 +56,7 @@ jobs:
     needs: [diff]
     name: "Terraform apply (qa-environment)"
     if: ${{ fromJson(needs.diff.outputs.tags).terraform.changed }}
-    uses: skafld/github-actions/.github/workflows/workflow-trigger.yaml@v2
+    uses: skafld/github-actions/.github/workflows/workflow-trigger.yaml@main
     with:
       workflow: terraform-apply
       ref: ${{ github.ref }}

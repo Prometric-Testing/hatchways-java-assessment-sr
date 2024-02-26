@@ -6,6 +6,6 @@ on:
 jobs:
   prerelease:
     name: "Pre Released"
-    uses: skafld/github-actions/.github/workflows/prerelease.yaml@v2
+    uses: skafld/github-actions/.github/workflows/prerelease.yaml@main
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

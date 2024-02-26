@@ -7,7 +7,7 @@ jobs:
 
   release:
     name: "Release"
-    uses: skafld/github-actions/.github/workflows/release.yaml@v2
+    uses: skafld/github-actions/.github/workflows/release.yaml@main
     with:
       env: prod-environment
     secrets:

@@ -8,7 +8,7 @@ on:
 jobs:
   generator:
     name: "Generator"
-    uses: skafld/github-actions/.github/workflows/generator.yaml@v2
+    uses: skafld/github-actions/.github/workflows/generator.yaml@main
     with:
       generator: "skafld:java"
       untracked_files: |

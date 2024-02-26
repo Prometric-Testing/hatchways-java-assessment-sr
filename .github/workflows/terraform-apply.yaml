@@ -20,7 +20,7 @@ on:
 jobs:
   terraform:
     name: "Terraform"
-    uses: skafld/github-actions/.github/workflows/terraform-apply.yaml@v2
+    uses: skafld/github-actions/.github/workflows/terraform-apply.yaml@main
     with:
       ref: ${{ github.event.inputs.ref }}
       env: ${{ github.event.inputs.env }}

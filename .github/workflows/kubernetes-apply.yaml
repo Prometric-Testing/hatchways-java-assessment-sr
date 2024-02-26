@@ -20,7 +20,7 @@ on:
 jobs:
   kubernetes:
     name: "Kubernetes"
-    uses: skafld/github-actions/.github/workflows/kubernetes-apply.yaml@v2
+    uses: skafld/github-actions/.github/workflows/kubernetes-apply.yaml@main
     with:
       ref: ${{ github.event.inputs.ref }}
       env: ${{ github.event.inputs.env }}
