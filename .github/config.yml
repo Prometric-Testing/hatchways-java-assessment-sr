@@ -1,0 +1,21 @@
+newIssueWelcomeComment: >
+  Thanks for opening your first issue here! Be sure to communicate with your peers!
+  ![Welcome GIF](https://media.tenor.com/AvRN6GlmzXsAAAAC/the-god-father-marlon-brando.gif)
+
+newPRWelcomeComment: >
+  Thanks for opening this pull request! Be sure to communicate with your peers!
+  ![Thank you GIF](https://gifdb.com/images/thumbnail/thank-you-funny-confetti-rain-d3ta5tbew5im63q3.gif)
+
+firstPRMergeComment: >
+  Congrats on merging your first pull request!
+  ![Congratulations GIF](https://i.gifer.com/origin/70/7002393920593c5fde49da402fd1c7dd_w200.gif)
+
+requestInfoReplyComment: >
+  We would appreciate it if you could provide us with more info about this issue/pr!
+
+requestInfoLabelToAdd: needs-more-info
+checkIssueTemplate: true
+checkPullRequestTemplate: true
+requestInfoOn:
+  pullRequest: true
+  issue: true

@@ -1,0 +1,11 @@
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: sample-api
+  namespace: sample
+  labels:
+    app: sample-api
+spec:
+  minReplicas: 2
+  maxReplicas: 4

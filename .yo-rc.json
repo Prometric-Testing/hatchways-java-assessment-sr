@@ -1,0 +1,108 @@
+{
+  "@skafld/generator-skafld": {
+    "projectName": "sample",
+    "orgName": "skafld",
+    "projectUrl": "https://github.com/skafld/sample",
+    "gitRepository": "git@github.com:skafld/sample.git",
+    "dockerRegistry": "docker.io/sample",
+    "generateModules": [
+      "api",
+      "worker",
+      "actions",
+      "terraform",
+      "kubernetes"
+    ],
+    "generateEnvironments": [
+      "local",
+      "qa-environment",
+      "dev-environment",
+      "prod-environment"
+    ],
+    "mavenGroupId": "com.skafld.sample",
+    "mavenArtifactId": "sample",
+    "includeApiHelpers": [],
+    "generateWorkflowActions": [
+      "check",
+      "build",
+      "build-spa",
+      "clear-github-actions-cache",
+      "release",
+      "generator",
+      "prerelease",
+      "acceptance",
+      "codeql-analysis",
+      "terraform-apply",
+      "kubernetes-apply"
+    ],
+    "includeTerraformModules": [],
+    "kubernetesNamespace": "sample",
+    "kubernetesProjectTag": "api",
+    "includeWorkerHelpers": [],
+    "modules": [
+      {
+        "name": "sample-api",
+        "module": "api",
+        "config": {},
+        "tags": [
+          "app",
+          "java"
+        ]
+      },
+      {
+        "name": "sample-worker",
+        "module": "worker",
+        "config": {},
+        "tags": [
+          "app",
+          "java"
+        ]
+      },
+      {
+        "name": "terraform",
+        "module": "terraform",
+        "config": {
+          "generateModule": false,
+          "moduleName": "sample",
+          "includeModules": []
+        },
+        "tags": [
+          "infra",
+          "terraform"
+        ]
+      },
+      {
+        "name": "kubernetes",
+        "module": "kubernetes",
+        "config": {
+          "namespace": "sample"
+        },
+        "tags": [
+          "infra",
+          "kubernetes"
+        ]
+      },
+      {
+        "name": "actions",
+        "module": "actions",
+        "config": {
+          "workflows": [
+            "check",
+            "build",
+            "build-spa",
+            "clear-github-actions-cache",
+            "release",
+            "generator",
+            "prerelease",
+            "codeql-analysis",
+            "terraform-apply",
+            "kubernetes-apply"
+          ]
+        },
+        "tags": [
+          "infra",
+          "actions"
+        ]
+      }
+    ]
+  }
+}

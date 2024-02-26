@@ -1,0 +1,73 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-worker
+  namespace: sample
+  labels:
+    app: sample-worker
+spec:
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: sample-worker
+  template:
+    metadata:
+      labels:
+        app: sample-worker
+    spec:
+      volumes:
+        - name: sample-worker
+          configMap:
+            name: sample-worker
+      containers:
+      - name: sample-worker
+        image: docker.io/sample/sample-worker:latest
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          -
+            name: sample-worker
+            mountPath: /usr/share/skafld/application-overrides.yaml
+            subPath: application-overrides.yaml
+        envFrom:
+          -
+            secretRef:
+              name: sample-worker
+          -
+            configMapRef:
+              name: sample-worker
+        env:
+          -
+            name: SPRING_PROFILES_ACTIVE
+            value: "default,overrides"
+          -
+            name: SPRING_CONFIG_ADDITIONAL-LOCATION
+            value: /usr/share/skafld/application-overrides.yaml
+          -
+            name: DD_AGENT_HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+        ports:
+        - name: java
+          containerPort: 8080
+        - name: management
+          containerPort: 8001
+        readinessProbe:
+          initialDelaySeconds: 60
+          httpGet:
+            path: "/actuator/health/readiness"
+            port: 8001
+        livenessProbe:
+          initialDelaySeconds: 60
+          httpGet:
+            path: "/actuator/health/liveness"
+            port: 8001
+        resources:
+          limits:
+            cpu: 500m
+            memory: 768Mi
+          requests:
+            cpu: 500m
+            memory: 768Mi

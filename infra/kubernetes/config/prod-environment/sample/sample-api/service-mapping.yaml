@@ -1,0 +1,11 @@
+
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: sample-api
+  namespace: sample
+spec:
+  prefix: "/sample/sample-api/"
+  rewrite: "/sample/sample-api/"
+  service: sample-api.sample:8080
